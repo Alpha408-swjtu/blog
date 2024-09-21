@@ -1,0 +1,69 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/js/my.js"></script>
+    <title>博客详情</title>
+</head>
+
+<body>
+    <span style="display: none;"><input id="bid" value="{{.bid}}"></input></span>
+    <div id="view" align="center" style="display: block; width: 50%; margin: auto;">
+        <span id="title" style="width: 100%;">{{.title}}</span><br>
+        <hr><br>
+        <div id="article" style="white-space: pre-wrap;">{{.article}}</div><!-- 这个style是为了把\n转为换行 -->
+        <br>更新于{{.update_time}}
+
+        <!--通过js控制编辑按钮是否展示-->
+        <br><button id="edit_bnt" onclick="edit();" style="display:none;">编辑</button>
+    </div>
+    <div id="update" align="center" style="display: none; width: 50%; margin: auto;">
+        <input type="text" id="edit_title" style="width: 100%;" name="edit_title" value="{{.title}}"></input><br>
+        <hr><br>
+        <textarea id="edit_article" name="edit_article" rows="15" style="width: 100%;">{{.article}}</textarea><br><br>
+        <button id="update_bnt" onclick="update();">提交</button><br>
+        <span id="msg" style="color: red;"></span>
+    </div>
+    <script>
+        function edit() {
+            document.querySelector("#view").style.display = 'none';
+            document.querySelector("#update").style.display = 'block';
+        };
+        function update() {
+            var title = document.querySelector("#edit_title").value;
+            var article = document.querySelector("#edit_article").value;
+            var bid = document.querySelector("#bid").value;
+            $.ajax({
+                type: "POST",
+                url: "/blog/update",
+                data: { "title": title, "article": article, "bid": bid },
+                beforeSend: function (request) {
+                    var auth_token = get_auth_token();
+                    request.setRequestHeader("auth_token", auth_token);
+                },
+                success: function (result) {
+                    window.location.replace("/blog/" + bid);  //跳转到博客详情页
+                },
+            }).fail(function (result, result1, result2) {
+                $('#msg').html(result.responseText);
+            });
+        };
+        // 客户端从sessionStorage里获取auth_token，拿auth_token和bid询问服务端当前用户是不是作者本人
+        $(document).ready(function () {//页面加载完成后执行
+            var bid = document.querySelector("#bid").value;
+            var auth_token = get_auth_token();
+            $.ajax({
+                type: "GET",
+                url: "/blog/belong",
+                data: { "bid": bid, "token": auth_token },
+                success: function (result) {
+                    if ("true" == result) {
+                        document.querySelector("#edit_bnt").style.display = 'block';
+                    }
+                }
+            }).fail(function (result, result1, result2) {
+            });
+        });
+    </script>
+</body>

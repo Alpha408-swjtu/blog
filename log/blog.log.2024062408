@@ -1,0 +1,4 @@
+time="2024-06-24 08:36:37.463" level=info msg="connect to mysql db blog" func=blog/database.createMysqlDB file="c:/Users/wangyuelin/Desktop/blog/database/db_connection.go:49"
+time="2024-06-24 08:37:50.483" level=info msg="connect to mysql db blog" func=blog/database.createMysqlDB file="c:/Users/wangyuelin/Desktop/blog/database/db_connection.go:49"
+time="2024-06-24 08:38:04.573" level=info msg="connect to mysql db blog" func=blog/database.createMysqlDB file="c:/Users/wangyuelin/Desktop/blog/database/db_connection.go:49"
+time="2024-06-24 08:51:18.922" level=info msg="connect to mysql db blog" func=blog/database.createMysqlDB file="c:/Users/wangyuelin/Desktop/blog/database/db_connection.go:49"

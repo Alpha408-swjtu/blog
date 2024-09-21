@@ -1,0 +1,65 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/md5.js"></script>
+    <script src="/js/my.js"></script>
+    <title>登录</title>
+    <style>
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="center">
+        <form id="loginForm">
+            <table>
+                <tr>
+                    <td>用户名</td>
+                    <td><input id="user" name="user" type="text" size="20" autofocus /></td>
+                </tr>
+                <tr>
+                    <td>密码</td>
+                    <td><input id="pass" name="pass" type="password" size="20" /></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center"><button type="submit">登录 </button> </td>
+                </tr>
+            </table>
+        </form>
+        <span id="msg" style="color: red;"></span>
+    </div>
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').submit(function (event) {
+                event.preventDefault();    //阻止form的默认行为（即form里的内容会拼在url里发起Get请求，这样原始密码就暴露了）
+                const form = document.querySelector("#loginForm");
+                var formData = new FormData(form);
+                var pass = formData.get("pass");   //取得用户输入的原始密码
+                var digest = CryptoJS.MD5(pass);
+                formData.set("pass", digest);   //直接在客户端对密码执行哈希
+                $.ajax({
+                    url: "/login/submit",
+                    data: formData,
+                    method: 'post',
+                    processData: false,
+                    contentType: false,
+                    enctype: 'multipart/form-data',
+                    success: function (result) {
+                        window.sessionStorage.setItem("auth_token", result.token);       //往sessionStorage里添加数据，不在不同的浏览器窗口之间共享（即使打开的是同一个url），关闭浏览器后sessionStorage自动清空
+                        // 登录成功后重定向到博客列表页
+                        window.location.href = "/blog/list/" + result.uid;
+                    }
+                }).fail(function (result, result1, result2) {
+                    $('#msg').html(result.responseJSON.msg);  //正常来说,应该按result.responseJSON.code重新组织话术
+                });
+            });
+        }); 
+    </script>
+</body>

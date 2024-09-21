@@ -1,0 +1,4 @@
+time="2023-12-21 16:03:46.536" level=info msg="connect to mysql db blog" func=blog/database.createMysqlDB file="D:/go_project/blog/database/db_connection.go:49"
+time="2023-12-21 16:03:46.552" level=info msg="user dqq(1) login" func=blog/handler.Login file="D:/go_project/blog/handler/login.go:41"
+time="2023-12-21 16:03:46.559" level=info msg="connect to redis 0" func=blog/database.createRedisClient file="D:/go_project/blog/database/db_connection.go:78"
+time="2023-12-21 16:05:19.757" level=info msg="user dlm(2) login" func=blog/handler.Login file="D:/go_project/blog/handler/login.go:41"

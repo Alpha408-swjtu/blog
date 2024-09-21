@@ -1,0 +1,27 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+</head>
+
+<body>
+    <span id="msg"></span>
+</body>
+
+<script>
+    $(document).ready(function(){
+        $.ajax({
+            method:'get',
+            url:'/account/body',
+            beforeSend:function(request){
+                // var jwt=window.sessionStorage.getItem("jwt");
+                var jwt=window.localStorage.getItem("jwt");
+                request.setRequestHeader("jwt",jwt);
+            },
+            success:function(result){
+                $('#msg').html("这是用户"+result.uid+"的管理后台");
+            },
+        });
+    });
+</script>

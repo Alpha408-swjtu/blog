@@ -1,0 +1,28 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="/js/my.js"></script>
+    <title>博客列表</title>
+</head>
+
+<body>
+    <div align="center" style="display: block; width: 50%; margin: auto;">
+        <span id="list">
+            <table>
+                <tr>
+                    <td align="center">博客列表</td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>
+                {{range .}}
+                <tr>
+                    <td style="padding-top: 10;"><a href="/blog/{{.Id}}">{{.Title}}</a></td>
+                </tr>
+                {{end}}
+            </table>
+        </span>
+    </div>
+</body>
